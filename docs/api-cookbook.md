@@ -18,7 +18,7 @@ curl -X POST http://localhost:8000/api/todos \
   -d '{"title": "Book flights", "description": "Check the dates with the team first"}'
 ```
 
-The response contains the new todo, including its `id`.
+The response contains the new todo, including the `id` you need for the later recipes.
 
 ## List open todos
 
