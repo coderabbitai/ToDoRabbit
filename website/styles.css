@@ -140,6 +140,31 @@ a {
   padding: 64px 0;
 }
 
+.faq {
+  padding: 64px 0;
+  background: var(--surface);
+}
+
+.faq h2 {
+  margin: 0 0 24px;
+  font-size: 1.75rem;
+}
+
+.faq details {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.faq details p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
 pre {
   padding: 16px;
   overflow-x: auto;
