@@ -1,4 +1,4 @@
--- Adds a priority and an optional due date to todos.
+-- Adds a priority and an optional due date to the todos table.
 --
 -- New databases get these columns from the models. Apply this script once to an
 -- existing SQLite database before deploying the matching backend version:
