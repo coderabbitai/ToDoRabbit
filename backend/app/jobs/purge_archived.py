@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import logging
 import os
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import delete
@@ -18,14 +19,22 @@ logger = logging.getLogger("todorabbit.jobs.purge_archived")
 DEFAULT_RETENTION_DAYS = 30
 
 
+@dataclass(frozen=True)
+class PurgeSummary:
+    """Outcome of a purge run."""
+
+    deleted: int
+    cutoff: datetime
+
+
 async def purge_archived(
     session: AsyncSession,
     retention_days: int = DEFAULT_RETENTION_DAYS,
     now: datetime | None = None,
-) -> int:
+) -> PurgeSummary:
     """Delete todos that were archived more than ``retention_days`` days ago.
 
-    Returns the number of deleted todos.
+    Returns a summary with the number of deleted todos and the cutoff that was applied.
     """
     if retention_days < 1:
         raise ValueError("retention_days must be at least 1")
@@ -35,11 +44,11 @@ async def purge_archived(
         delete(Todo).where(Todo.archived_at.is_not(None), Todo.archived_at < cutoff)
     )
     await session.commit()
-    return result.rowcount
+    return PurgeSummary(deleted=result.rowcount, cutoff=cutoff)
 
 
-async def run(retention_days: int, database_url: str) -> int:
-    """Connect to the database and purge archived todos."""
+async def run(retention_days: int, database_url: str) -> PurgeSummary:
+    """Connect to the database, purge archived todos and return the summary."""
     engine = create_async_engine(database_url, echo=False, future=True)
     try:
         async with engine.begin() as conn:
@@ -62,8 +71,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    deleted = asyncio.run(run(args.retention_days, settings.database_url))
-    logger.info("Purged %d archived todo(s) older than %d day(s)", deleted, args.retention_days)
+    summary = asyncio.run(run(args.retention_days, settings.database_url))
+    logger.info(
+        "Purged %d archived todo(s) archived before %s",
+        summary.deleted,
+        summary.cutoff.isoformat(),
+    )
     return 0
 
 
