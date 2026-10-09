@@ -62,3 +62,7 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Check landing page links
+        working-directory: website
+        run: node --test links.test.mjs
