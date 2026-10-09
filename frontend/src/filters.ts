@@ -16,6 +16,7 @@ export function toCompletedParam(filter: TodoFilter): boolean | undefined {
   return filter === 'completed';
 }
 
+/** Whether a todo belongs in the list for the given filter. */
 export function matchesFilter(todo: Todo, filter: TodoFilter): boolean {
   const completed = toCompletedParam(filter);
   return completed === undefined || todo.completed === completed;
