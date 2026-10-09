@@ -16,13 +16,17 @@ router = APIRouter(prefix="/api/todos", tags=["todos"])
 @router.get("", response_model=list[TodoResponse])
 async def list_todos(
     completed: bool | None = Query(None, description="Filter by completion status"),
+    include_archived: bool = Query(False, description="Include archived todos"),
     db: AsyncSession = Depends(get_db),
 ) -> list[Todo]:
     """Retrieve all todos, optionally filtered by completion status."""
     query = select(Todo).order_by(Todo.created_at.desc())
-    
+
     if completed is not None:
         query = query.where(Todo.completed == completed)
+
+    if not include_archived:
+        query = query.where(Todo.archived_at.is_(None))
     
     result = await db.execute(query)
     todos = result.scalars().all()
@@ -97,3 +101,23 @@ async def delete_todo(
     
     await db.delete(todo)
     await db.commit()
+
+
+@router.post("/{todo_id}/archive", response_model=TodoResponse)
+async def archive_todo(
+    todo_id: int,
+    db: AsyncSession = Depends(get_db),
+) -> Todo:
+    """Archive a todo so it no longer shows up in the default list."""
+    result = await db.execute(select(Todo).where(Todo.id == todo_id))
+    todo = result.scalar_one_or_none()
+
+    if todo is None:
+        raise HTTPException(status_code=404, detail="Todo not found")
+
+    if todo.archived_at is None:
+        todo.archived_at = datetime.now(timezone.utc)
+        await db.commit()
+        await db.refresh(todo)
+
+    return todo

@@ -29,5 +29,6 @@ class TodoResponse(BaseModel):
     title: str
     description: str | None
     completed: bool
+    archived_at: datetime | None
     created_at: datetime
     updated_at: datetime

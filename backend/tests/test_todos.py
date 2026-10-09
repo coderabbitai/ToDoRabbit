@@ -185,3 +185,28 @@ async def test_health_check(client: AsyncClient):
     response = await client.get("/api/health")
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
+
+
+@pytest.mark.asyncio
+async def test_archive_todo_hides_it_from_default_list(client: AsyncClient):
+    """Test that archived todos are excluded from the default list."""
+    create_response = await client.post("/api/todos", json={"title": "Old task"})
+    todo_id = create_response.json()["id"]
+
+    archive_response = await client.post(f"/api/todos/{todo_id}/archive")
+    assert archive_response.status_code == 200
+    assert archive_response.json()["archived_at"] is not None
+
+    default_list = await client.get("/api/todos")
+    assert default_list.json() == []
+
+    full_list = await client.get("/api/todos?include_archived=true")
+    assert [todo["id"] for todo in full_list.json()] == [todo_id]
+
+
+@pytest.mark.asyncio
+async def test_archive_nonexistent_todo(client: AsyncClient):
+    """Test archiving a todo that doesn't exist."""
+    response = await client.post("/api/todos/9999/archive")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Todo not found"
