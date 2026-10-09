@@ -54,7 +54,7 @@ make test           # both
 
 ### Port 3000 or 8000 is already in use
 
-Stop the process that is using the port, or change the published port in `docker-compose.yml`, for example `"3001:3000"`. To see what is listening on a port, run `lsof -i :3000`.
+Stop the process that is using the port, or change the published port in `docker-compose.yml`, for example `"3001:3000"`. To see what is listening on a port, run `lsof -i :3000` for the frontend or `lsof -i :8000` for the backend.
 
 ### The frontend shows an API error
 
@@ -72,7 +72,7 @@ Add the origin you are loading the frontend from to `CORS_ORIGINS`. See [configu
 
 ### Start again with an empty database
 
-Stop the app and delete the SQLite file. When running locally, that is `backend/todos.db`. With Docker Compose, remove the containers and their volumes:
+Stop the app and delete the SQLite file. With the default configuration and a local run, that is `backend/todos.db`. If you changed `DATABASE_URL`, delete the file it points to instead. With Docker Compose, remove the containers and their volumes:
 
 ```bash
 docker compose down -v
