@@ -210,3 +210,50 @@ async def test_archive_nonexistent_todo(client: AsyncClient):
     response = await client.post("/api/todos/9999/archive")
     assert response.status_code == 404
     assert response.json()["detail"] == "Todo not found"
+
+
+@pytest.mark.asyncio
+async def test_search_matches_title_and_description_case_insensitively(client: AsyncClient):
+    """Test searching todos by text in the title or description."""
+    await client.post("/api/todos", json={"title": "Buy Milk"})
+    await client.post(
+        "/api/todos",
+        json={"title": "Plan trip", "description": "Book flights and a MILK run"},
+    )
+    await client.post("/api/todos", json={"title": "Unrelated"})
+
+    response = await client.get("/api/todos?search=milk")
+    assert response.status_code == 200
+    assert sorted(todo["title"] for todo in response.json()) == ["Buy Milk", "Plan trip"]
+
+
+@pytest.mark.asyncio
+async def test_search_without_matches_returns_empty_list(client: AsyncClient):
+    """Test that a search with no matches returns an empty list."""
+    await client.post("/api/todos", json={"title": "Buy milk"})
+
+    response = await client.get("/api/todos?search=bread")
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+@pytest.mark.asyncio
+async def test_search_treats_wildcards_literally(client: AsyncClient):
+    """Test that % and _ in the search term are not interpreted as LIKE wildcards."""
+    await client.post("/api/todos", json={"title": "Reach 100% coverage"})
+    await client.post("/api/todos", json={"title": "Reach 100 points"})
+
+    response = await client.get("/api/todos?search=100%25")
+    assert [todo["title"] for todo in response.json()] == ["Reach 100% coverage"]
+
+
+@pytest.mark.asyncio
+async def test_search_combines_with_completed_filter(client: AsyncClient):
+    """Test combining search with the completed filter."""
+    open_todo = await client.post("/api/todos", json={"title": "Write report"})
+    done_todo = await client.post("/api/todos", json={"title": "Write changelog"})
+    await client.patch(f"/api/todos/{done_todo.json()['id']}", json={"completed": True})
+
+    response = await client.get("/api/todos?search=write&completed=true")
+    assert [todo["id"] for todo in response.json()] == [done_todo.json()["id"]]
+    assert open_todo.json()["id"] not in [todo["id"] for todo in response.json()]
