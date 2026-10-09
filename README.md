@@ -2,6 +2,8 @@
 
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/HadesArchitect/ToDoRabbit?utm_source=oss&utm_medium=github&utm_campaign=HadesArchitect%2FToDoRabbit&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
+[![CI](https://github.com/coderabbitai/ToDoRabbit/actions/workflows/ci.yml/badge.svg)](https://github.com/coderabbitai/ToDoRabbit/actions/workflows/ci.yml)
+
 A sample monorepo todo list application demonstrating modern full-stack development practices and developer tooling for CodeRabbit AI code review.
 
 ## Tech Stack
@@ -97,6 +99,8 @@ Run both backend tests and frontend checks (type check and unit tests):
 ```bash
 make test
 ```
+
+The same checks run in CI on every pull request and on every push to `main`.
 
 ## Development
 
