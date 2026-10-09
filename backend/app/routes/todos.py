@@ -42,6 +42,8 @@ async def create_todo(
     todo = Todo(
         title=todo_data.title,
         description=todo_data.description,
+        priority=todo_data.priority,
+        due_date=todo_data.due_date,
     )
     db.add(todo)
     await db.commit()
