@@ -1,0 +1,35 @@
+name: Nightly cleanup
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  purge-archived:
+    name: Purge archived todos
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Purge archived todos
+        env:
+          DATABASE_URL: ${{ vars.DATABASE_URL || 'sqlite+aiosqlite:///./todos.db' }}
+          ARCHIVE_RETENTION_DAYS: "30"
+        run: python -m app.jobs.purge_archived
