@@ -13,7 +13,7 @@ The backend reads its settings from environment variables, or from a `.env` file
 | `AUTH_USERNAME` | `admin` | Username accepted by `POST /api/auth/login`. |
 | `AUTH_PASSWORD` | empty | Password accepted by `POST /api/auth/login`. Required when authentication is enabled. |
 | `SESSION_SECRET` | empty | Secret used to sign session cookies. Required when authentication is enabled. |
-| `SESSION_TTL_MINUTES` | `60` | How long a session stays valid after login. |
+| `SESSION_TTL_MINUTES` | `60` | How long a session stays valid after login, in minutes. |
 | `SESSION_COOKIE_SECURE` | `true` | Send the session cookie over HTTPS only. Set to `false` for local development over plain HTTP. |
 
 Example `backend/.env`:
