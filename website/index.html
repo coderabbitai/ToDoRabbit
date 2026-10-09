@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDoRabbit | A simple and elegant todo list</title>
+    <meta
+      name="description"
+      content="ToDoRabbit is a fast, self-hosted todo list. Capture tasks, check them off, and archive what you are done with."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="#top">ToDoRabbit</a>
+        <nav aria-label="Main">
+          <a href="#features">Features</a>
+          <a href="#self-hosting">Self-hosting</a>
+          <a href="https://github.com/coderabbitai/ToDoRabbit">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <h1>A simple and elegant todo list</h1>
+          <p class="lead">
+            Capture tasks in seconds, check them off, and archive what you are done with. Runs on your own
+            server with a single command.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/coderabbitai/ToDoRabbit#getting-started">Get started</a>
+            <a class="button" href="https://github.com/coderabbitai/ToDoRabbit/tree/main/docs">Read the docs</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features">
+        <div class="container">
+          <h2>Everything you need, nothing you do not</h2>
+          <div class="grid">
+            <article class="card">
+              <h3>Quick capture</h3>
+              <p>Add a title and an optional description. Your list updates instantly.</p>
+            </article>
+            <article class="card">
+              <h3>Filter and archive</h3>
+              <p>Show open or completed tasks, and archive finished work to keep your list tidy.</p>
+            </article>
+            <article class="card">
+              <h3>Simple REST API</h3>
+              <p>Every action in the app is available over a documented JSON API.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="self-hosting" class="self-hosting">
+        <div class="container">
+          <h2>Self-host in one command</h2>
+          <p>ToDoRabbit ships with Docker Compose. Clone the repository and start both services:</p>
+          <pre><code>git clone https://github.com/coderabbitai/ToDoRabbit.git
+cd ToDoRabbit
+make up</code></pre>
+          <p>Open <code>http://localhost:3000</code> and add your first task.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>ToDoRabbit is open source. Released under the project license.</p>
+      </div>
+    </footer>
+  </body>
+</html>
