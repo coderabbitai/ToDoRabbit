@@ -60,10 +60,17 @@ docker compose up --build
 todo-app/
 ├── backend/           # FastAPI backend with async SQLAlchemy
 ├── frontend/          # React TypeScript frontend with Vite
+├── docs/              # Getting started, API reference, configuration, deployment
+├── website/           # Static landing page
 ├── docker-compose.yml # Service orchestration
 ├── Makefile          # Convenience commands
 └── README.md         # This file
 ```
+
+## Documentation and Website
+
+- [`docs/`](docs/getting-started.md) contains the getting started guide, API reference, configuration options and deployment notes.
+- [`website/`](website/index.html) is a static landing page. Open `website/index.html` in a browser or serve the folder with any static file server.
 
 ## Running Tests
 
@@ -75,9 +82,9 @@ Run backend tests with pytest:
 make test-backend
 ```
 
-### Frontend Type Checking
+### Frontend Checks
 
-Run TypeScript type checking:
+Run TypeScript type checking and the Vitest unit tests:
 
 ```bash
 make test-frontend
@@ -85,7 +92,7 @@ make test-frontend
 
 ### All Tests
 
-Run both backend tests and frontend type checking:
+Run both backend tests and frontend checks (type check and unit tests):
 
 ```bash
 make test
