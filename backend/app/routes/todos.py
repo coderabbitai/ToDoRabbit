@@ -31,7 +31,7 @@ async def list_todos(
     ),
     db: AsyncSession = Depends(get_db),
 ) -> list[Todo]:
-    """Retrieve all todos, optionally filtered by completion status."""
+    """Retrieve todos, optionally filtered by completion status or a search term."""
     query = select(Todo).order_by(Todo.created_at.desc())
 
     if completed is not None:
