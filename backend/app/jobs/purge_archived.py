@@ -48,7 +48,7 @@ async def purge_archived(
 
 
 async def run(retention_days: int, database_url: str) -> PurgeSummary:
-    """Connect to the database and purge archived todos."""
+    """Connect to the database, purge archived todos and return the summary."""
     engine = create_async_engine(database_url, echo=False, future=True)
     try:
         async with engine.begin() as conn:
