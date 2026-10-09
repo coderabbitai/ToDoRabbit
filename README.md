@@ -100,7 +100,7 @@ Run both backend tests and frontend checks (type check and unit tests):
 make test
 ```
 
-The same checks run in CI on every pull request.
+The same checks run in CI on every pull request and on every push to `main`.
 
 ## Development
 
