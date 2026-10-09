@@ -17,6 +17,7 @@
         <nav aria-label="Main">
           <a href="#features">Features</a>
           <a href="#self-hosting">Self-hosting</a>
+          <a href="#faq">FAQ</a>
           <a href="https://github.com/coderabbitai/ToDoRabbit">GitHub</a>
         </nav>
       </div>
@@ -65,6 +66,24 @@
 cd ToDoRabbit
 make up</code></pre>
           <p>Open <code>http://localhost:3000</code> and add your first task.</p>
+        </div>
+      </section>
+
+      <section id="faqs" class="faq">
+        <div class="container">
+          <h2>Frequently asked questions</h2>
+          <details>
+            <summary>Do I need to run a database server?</summary>
+            <p>No. ToDoRabbit stores your tasks in a SQLite file, so there is nothing else to install or maintain.</p>
+          </details>
+          <details>
+            <summary>How do I start the app after cloning?</summary>
+            <p>Run <code>make start</code> from the project root. Docker Compose builds both services and the app is available on port 3000.</p>
+          </details>
+          <details>
+            <summary>Can I use a different database?</summary>
+            <p>Yes. Set the <code>DATABASE_URL</code> environment variable to any SQLAlchemy async database URL.</p>
+          </details>
         </div>
       </section>
     </main>
