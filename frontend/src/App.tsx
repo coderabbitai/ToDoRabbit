@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import type { Todo, TodoCreate } from './types/todo';
 import { fetchTodos, createTodo, updateTodo, deleteTodo } from './api/todos';
+import { matchesFilter, toCompletedParam, type TodoFilter } from './filters';
 import AddTodoForm from './components/AddTodoForm';
+import FilterTabs from './components/FilterTabs';
 import TodoList from './components/TodoList';
 import styles from './App.module.css';
 
@@ -9,12 +11,13 @@ export default function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<TodoFilter>('all');
 
-  const loadTodos = async () => {
+  const loadTodos = async (activeFilter: TodoFilter) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchTodos();
+      const data = await fetchTodos(toCompletedParam(activeFilter));
       setTodos(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load todos');
@@ -24,13 +27,15 @@ export default function App() {
   };
 
   useEffect(() => {
-    loadTodos();
-  }, []);
+    loadTodos(filter);
+  }, [filter]);
 
   const handleAddTodo = async (data: TodoCreate) => {
     try {
       const newTodo = await createTodo(data);
-      setTodos((prev) => [newTodo, ...prev]);
+      if (matchesFilter(newTodo, filter)) {
+        setTodos((prev) => [newTodo, ...prev]);
+      }
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Failed to create todo');
       throw err;
@@ -41,7 +46,9 @@ export default function App() {
     try {
       const updatedTodo = await updateTodo(id, { completed });
       setTodos((prev) =>
-        prev.map((todo) => (todo.id === id ? updatedTodo : todo))
+        prev
+          .map((todo) => (todo.id === id ? updatedTodo : todo))
+          .filter((todo) => matchesFilter(todo, filter))
       );
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Failed to update todo');
@@ -72,6 +79,7 @@ export default function App() {
         </div>
 
         <div className={styles.card}>
+          <FilterTabs value={filter} onChange={setFilter} />
           <TodoList
             todos={todos}
             loading={loading}
