@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -13,13 +13,25 @@ from app.schemas import TodoCreate, TodoResponse, TodoUpdate
 router = APIRouter(prefix="/api/todos", tags=["todos"])
 
 
+def _like_pattern(term: str) -> str:
+    """Build a case-insensitive "contains" pattern, escaping LIKE wildcards in the term."""
+    escaped = term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return f"%{escaped}%"
+
+
 @router.get("", response_model=list[TodoResponse])
 async def list_todos(
     completed: bool | None = Query(None, description="Filter by completion status"),
     include_archived: bool = Query(False, description="Include archived todos"),
+    search: str | None = Query(
+        None,
+        min_length=1,
+        max_length=100,
+        description="Only return todos whose title or description contains this text",
+    ),
     db: AsyncSession = Depends(get_db),
 ) -> list[Todo]:
-    """Retrieve all todos, optionally filtered by completion status."""
+    """Retrieve todos, optionally filtered by completion status or a search term."""
     query = select(Todo).order_by(Todo.created_at.desc())
 
     if completed is not None:
@@ -27,6 +39,15 @@ async def list_todos(
 
     if not include_archived:
         query = query.where(Todo.archived_at.is_(None))
+
+    if search:
+        pattern = _like_pattern(search)
+        query = query.where(
+            or_(
+                Todo.title.ilike(pattern, escape="\\"),
+                Todo.description.ilike(pattern, escape="\\"),
+            )
+        )
     
     result = await db.execute(query)
     todos = result.scalars().all()
