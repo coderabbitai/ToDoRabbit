@@ -50,6 +50,34 @@ make test-frontend  # type check and Vitest
 make test           # both
 ```
 
+## Troubleshooting
+
+### Port 3000 or 8000 is already in use
+
+Stop the process that is using the port, or change the published port in `docker-compose.yml`, for example `"3001:3000"`. To see what is listening on a port, run `lsof -i :3000`.
+
+### The frontend shows an API error
+
+The frontend could not reach the backend. Check that the backend is running and healthy:
+
+```bash
+curl http://localhost:8000/api/health
+```
+
+If you run the frontend with `npm run dev`, the backend must listen on port 8000, because Vite proxies `/api` requests there.
+
+### Browser requests fail with a CORS error
+
+Add the origin you are loading the frontend from to `CORS_ORIGINS`. See [configuration](configuration.md) for the format.
+
+### Start again with an empty database
+
+Stop the app and delete the SQLite file. When running locally, that is `backend/todos.db`. With Docker Compose, remove the containers and their volumes:
+
+```bash
+docker compose down -v
+```
+
 ## Next steps
 
 - Browse the [API reference](api-reference.md) to see every endpoint.
