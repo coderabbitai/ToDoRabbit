@@ -163,6 +163,7 @@ code {
 .footer-links {
   display: flex;
   gap: 24px;
+  flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 12px;
 }
