@@ -54,7 +54,7 @@ make test           # both
 
 ### Port 3000 or 8000 is already in use
 
-Stop the process that is using the port, or change the published port in `docker-compose.yml`, for example `"3001:3000"`. To see what is listening on a port, run `lsof -i :3000` for the frontend or `lsof -i :8000` for the backend.
+Stop the process that is using the port, or change the published port in `docker-compose.yml`, for example `"3001:3000"`. To find out what is listening on a port, run `lsof -i :3000` for the frontend or `lsof -i :8000` for the backend.
 
 ### The frontend shows an API error
 
