@@ -12,9 +12,9 @@ down:
 test-backend:
 	cd backend && python -m pytest
 
-# Run frontend type checking
+# Run frontend type checking and unit tests
 test-frontend:
-	cd frontend && npm run lint
+	cd frontend && npm run lint && npm test
 
 # Run all tests (backend + frontend)
 test: test-backend test-frontend
