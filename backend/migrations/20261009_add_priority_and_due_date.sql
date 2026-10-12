@@ -12,6 +12,7 @@ BEGIN;
 ALTER TABLE todos ADD COLUMN priority VARCHAR(16) NOT NULL DEFAULT 'medium';
 ALTER TABLE todos ADD COLUMN due_date DATE;
 
+-- Speeds up sorting and filtering by due date.
 CREATE INDEX IF NOT EXISTS ix_todos_due_date ON todos (due_date);
 
 COMMIT;
