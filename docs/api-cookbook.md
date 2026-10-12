@@ -56,4 +56,4 @@ curl "http://localhost:8000/api/todos?archived=true"
 curl -X DELETE http://localhost:8000/api/todos/1
 ```
 
-A successful delete returns `204 No Content` and an empty body.
+A successful delete returns `204 No Content` with an empty body.
