@@ -61,6 +61,7 @@ async def run(retention_days: int, database_url: str) -> PurgeSummary:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Command-line entry point. Returns the process exit code."""
     parser = argparse.ArgumentParser(description="Delete todos archived longer than N days ago.")
     parser.add_argument(
         "--retention-days",
