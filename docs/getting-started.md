@@ -68,7 +68,7 @@ If you run the frontend with `npm run dev`, the backend must listen on port 8000
 
 ### Browser requests fail with a CORS error
 
-Add the origin you are loading the frontend from to `CORS_ORIGINS`. See [configuration](configuration.md) for the format.
+Add the origin the frontend is served from to `CORS_ORIGINS`. See [configuration](configuration.md) for the format.
 
 ### Start again with an empty database
 
