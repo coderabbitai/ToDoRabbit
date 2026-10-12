@@ -2,6 +2,7 @@ import type { Todo } from './types/todo';
 
 export type TodoFilter = 'all' | 'active' | 'completed';
 
+/** Filter tabs in the order they are displayed. */
 export const FILTERS: { value: TodoFilter; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'active', label: 'Active' },
