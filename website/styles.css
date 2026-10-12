@@ -150,6 +150,7 @@ a {
   font-size: 1.75rem;
 }
 
+/* Each question is a collapsible details element. */
 .faq details {
   padding: 16px 0;
   border-bottom: 1px solid var(--border);
