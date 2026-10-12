@@ -160,6 +160,7 @@ code {
   text-align: center;
 }
 
+/* Row of links above the footer text. Wraps on narrow screens. */
 .footer-links {
   display: flex;
   gap: 24px;
