@@ -15,6 +15,7 @@ router = APIRouter(prefix="/api/todos", tags=["todos"])
 
 def _like_pattern(term: str) -> str:
     """Build a case-insensitive "contains" pattern, escaping LIKE wildcards in the term."""
+    # Escape the backslash first so the escapes added for % and _ are not doubled.
     escaped = term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
     return f"%{escaped}%"
 
