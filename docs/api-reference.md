@@ -30,9 +30,11 @@ Returns todos, newest first. Archived todos are hidden unless you ask for them.
 | --- | --- | --- |
 | `completed` | boolean | Return only completed or only open todos. |
 | `include_archived` | boolean | Include archived todos. Defaults to `false`. |
+| `search` | string | Only return todos whose title or description contains the text, ignoring case. 1 to 100 characters. |
 
 ```bash
 curl "http://localhost:8000/api/todos?completed=false"
+curl "http://localhost:8000/api/todos?search=milk"
 ```
 
 ### Create a todo
