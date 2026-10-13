@@ -2,12 +2,13 @@
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.auth import require_session
 from app.config import settings
 from app.database import Base, engine
-from app.routes import todos
+from app.routes import auth, todos
 
 
 @asynccontextmanager
@@ -38,7 +39,8 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(todos.router)
+app.include_router(auth.router)
+app.include_router(todos.router, dependencies=[Depends(require_session)])
 
 
 @app.get("/api/health")
