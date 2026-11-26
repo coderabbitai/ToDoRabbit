@@ -57,14 +57,14 @@ docker compose up --build
 ## Project Structure
 
 ```text
-todo-app/
+ToDoRabbit/
 ├── backend/           # FastAPI backend with async SQLAlchemy
 ├── frontend/          # React TypeScript frontend with Vite
 ├── docs/              # Getting started, API reference, configuration, deployment
 ├── website/           # Static landing page
 ├── docker-compose.yml # Service orchestration
-├── Makefile          # Convenience commands
-└── README.md         # This file
+├── Makefile           # Convenience commands
+└── README.md          # This file
 ```
 
 ## Documentation and Website
