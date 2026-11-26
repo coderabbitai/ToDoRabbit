@@ -36,6 +36,15 @@ Save this as `docker-compose.override.yml` next to `docker-compose.yml`, and Com
 
 If you serve the frontend from your own domain, add it to `CORS_ORIGINS` on the backend, for example `CORS_ORIGINS=["https://todos.example.com"]`. See [configuration](configuration.md) for all settings.
 
+## Upgrade an existing database
+
+The backend creates missing tables on startup but never alters existing ones. When a release adds columns, apply the matching script from `backend/migrations/` once before you deploy it. Take a copy of the database file first.
+
+```bash
+cp todos.db todos.db.bak
+sqlite3 todos.db < backend/migrations/20261009_add_priority_and_due_date.sql
+```
+
 ## Updating
 
 ```bash
